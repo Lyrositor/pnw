@@ -1,4 +1,5 @@
 from .continent import Continent
+from .improvement import *
 from .military import MilitaryUnit
 from .project import Project
 
@@ -101,10 +102,6 @@ DOMESTIC_POLICIES = {
     "Urbanization": URBANIZATION
 }
 
-################
-# Improvements #
-################
-
 ############
 # Military #
 ############
@@ -123,11 +120,73 @@ TANKS = MilitaryUnit(
     {MONEY: 75},
     {MUNITIONS: 1 / 100, GASOLINE: 1 / 100}
 )
-AIR_FORCE = None
-NAVAL_SHIPS = None
-SPIES = None
-MISSILES = None
-NUCLEAR_WEAPONS = None
+AIR_FORCE = MilitaryUnit(
+    "Air Force",
+    {MONEY: 4000, ALUMINUM: 3},
+    {MONEY: 500},
+    {MONEY: 750},
+    {MUNITIONS: 1/4, GASOLINE: 1/4}
+)
+NAVAL_SHIPS = MilitaryUnit(
+    "Naval Ships",
+    {MONEY: 50000, STEEL: 25},
+    {MONEY: 3750},
+    {MONEY: 5625},
+    {MUNITIONS: 3, GASOLINE: 2}
+)
+SPIES = MilitaryUnit(
+    "Spies",
+    {MONEY: 50000},
+    {MONEY: 2400},
+    {MONEY: 2400},
+    {}
+)
+MISSILES = MilitaryUnit(
+    "Missiles",
+    {MONEY: 150000, ALUMINUM: 100, GASOLINE: 75, MUNITIONS: 75},
+    {MONEY: 21000},
+    {MONEY: 31500},
+    {}
+)
+NUCLEAR_WEAPONS = MilitaryUnit(
+    "Nuclear Weapons",
+    {MONEY: 1750000, ALUMINUM: 750, GASOLINE: 500, URANIUM: 250},
+    {MONEY: 35000},
+    {MONEY: 52500},
+    {}
+)
+
+################
+# Improvements #
+################
+
+COAL_POWER = Improvement("Coal Power", {MONEY: 5000}, {MONEY: -1200}, 8)
+OIL_POWER = Improvement("Oil Power", {MONEY: 7000}, {MONEY: -1800}, 6)
+NUCLEAR_POWER = Improvement("Nuclear Power", {MONEY: 500000, STEEL: 100}, {MONEY: -10500})
+WIND_POWER = Improvement("Wind Power", {MONEY: 30000, ALUMINUM: 25}, {MONEY: -500})
+COAL_MINE = Improvement("Coal Mine", {MONEY: 1000}, {MONEY: -400, COAL: 6}, 6)
+OIL_WELL = Improvement("Oil Well", {MONEY: 1500}, {MONEY: -600, OIL: 9}, 6)
+BAUXITE_MINE = Improvement("Bauxite Mine", {MONEY: 9500}, {MONEY: -1600, BAUXITE: 6}, 6)
+IRON_MINE = Improvement("Iron Mine", {MONEY: 9500}, {MONEY: -1600, IRON: 6}, 6)
+LEAD_MINE = Improvement("Lead Mine", {MONEY: 7500}, {MONEY: -1500, LEAD: 9}, 6)
+URANIUM_MINE = Improvement("Uranium Mine", {MONEY: 25000}, {MONEY: -5000, URANIUM: 3}, 10)
+FARM = Improvement("Farm", {MONEY: 1000}, {MONEY: -300}, 1)
+OIL_REFINERY = Improvement("Oil Refinery", {MONEY: 45000}, {MONEY: -4000, OIL: -3, GASOLINE: 6}, 16, True)
+STEEL_MILL = Improvement("Steel Mill", {MONEY: 45000}, {MONEY: -4000, IRON: -3, COAL: -3, STEEL: 9}, 20, True)
+ALUMINUM_REFINERY = Improvement("Aluminum Refinery", {MONEY: 30000}, {MONEY: -2500, BAUXITE: -3, ALUMINUM: 9}, 20, True)
+MUNITIONS_FACTORY = Improvement("Munitions Factory", {MONEY: 35000}, {MONEY: -3500, LEAD: -6, MUNITIONS: 18}, 16, True)
+POLICE_STATION = Improvement("Police Station", {MONEY: 75000, STEEL: 20}, {MONEY: -750}, 1, True)
+HOSPITAL = Improvement("Hospital", {MONEY: 100000, ALUMINUM: 25}, {MONEY: -1000}, 4, True)
+RECYCLING_CENTER = Improvement("Recycling Center", {MONEY: 125000}, {MONEY: -2500}, -70, True)
+SUBWAY = CommerceImprovement("Subway", {MONEY: 250000, STEEL: 50, ALUMINUM: 25}, {MONEY: -3250}, 7, -45)
+SUPERMARKET = CommerceImprovement("Supermarket", {MONEY: 5000}, {MONEY: -600}, 4)
+BANK = CommerceImprovement("Bank", {MONEY: 1500, STEEL: 5, ALUMINUM: 10}, {MONEY: -1800}, 7)
+SHOPPING_MALL = CommerceImprovement("Shopping Mall", {MONEY: 45000, STEEL: 20, ALUMINUM: 25}, {MONEY: -5400}, 12, 2)
+STADIUM = CommerceImprovement("Stadium", {MONEY: 100000, STEEL: 40, ALUMINUM: 50}, {MONEY: -12150}, 18, 5)
+BARRACKS = MilitaryImprovement("Barracks", {MONEY: 3000}, {SOLDIERS: 3000})
+FACTORY = MilitaryImprovement("Factory", {MONEY: 15000}, {TANKS: 250})
+AIR_FORCE_BASE = MilitaryImprovement("Air Force Base", {MONEY: 100000, STEEL: 10}, {AIR_FORCE: 18})
+DRYDOCK = MilitaryImprovement("Drydock", {MONEY: 250000, ALUMINUM: 20}, {NAVAL_SHIPS: 5})
 
 ############
 # Projects #
@@ -141,10 +200,6 @@ BAUXITEWORKS = Project(
         "Bauxiteworks",
         {MONEY: 5000000, STEEL: 750, GASOLINE: 1500}
 )
-IRONWORKS = Project(
-        "Ironworks",
-        {MONEY: 5000000, ALUMINUM: 750, GASOLINE: 1500}
-)
 CEN_CIV_ENG = Project(
         "Center for Civil Engineering",
         {MONEY: 3000000, OIL: 1000, IRON: 1000, BAUXITE: 1000}
@@ -157,13 +212,21 @@ EM_GAS_RESERVE = Project(
         "Emergency Gasoline Reserve",
         {MONEY: 4000000, ALUMINUM: 125, STEEL: 125}
 )
-MASS_IRRIGATION = Project(
-        "Mass Irrigation",
-        {MONEY: 3000000, ALUMINUM: 500, STEEL: 500}
-)
 INT_TRADE_CENTER = Project(
         "International Trade Center",
         {MONEY: 45000000, ALUMINUM: 2500, STEEL: 2500, GASOLINE: 5000}
+)
+IRON_DOME = Project(
+        "Iron Dome",
+        {MONEY: 6000000, ALUMINUM: 500, STEEL: 1250, GASOLINE: 500}
+)
+IRONWORKS = Project(
+        "Ironworks",
+        {MONEY: 5000000, ALUMINUM: 750, GASOLINE: 1500}
+)
+MASS_IRRIGATION = Project(
+        "Mass Irrigation",
+        {MONEY: 3000000, ALUMINUM: 500, STEEL: 500}
 )
 MISSILE_L_PAD = Project(
         "Missile Launch Pad",
@@ -173,22 +236,27 @@ NUCLEAR_RES_FAC = Project(
         "Nuclear Research Facility",
         {MONEY: 50000000, STEEL: 5000, GASOLINE: 7500}
 )
-IRON_DOME = Project(
-        "Iron Dome",
-        {MONEY: 6000000, ALUMINUM: 500, STEEL: 1250, GASOLINE: 500}
-)
-VITAL_DEF_SYS = Project(
-        "Vital Defense System",
-        {MONEY: 40000000, ALUMINUM: 3000, STEEL: 6500, GASOLINE: 5000}
+PROP_BUREAU = Project(
+        "Propaganda Bureau",
+        {MONEY: 15000000, ALUMINUM: 1500}
 )
 URANIUM_ENRICH = Project(
         "Uranium Enrichment Program",
         {MONEY: 21000000, ALUMINUM: 1000, GASOLINE: 1000, URANIUM: 500}
 )
-PROP_BUREAU = Project(
-        "Propaganda Bureau",
-        {MONEY: 15000000, ALUMINUM: 1500}
+VITAL_DEF_SYS = Project(
+        "Vital Defense System",
+        {MONEY: 40000000, ALUMINUM: 3000, STEEL: 6500, GASOLINE: 5000}
 )
+
+FOOD_PROD = 1 / 25
+FOOD_PROD_MI = 12 / 250
+
+ARMS_STOCKPILE_MOD = 1.34
+BAUXITEWORKS_MOD = 1.36
+EM_GAS_RESERVE_MOD = 2.00
+IRONWORKS_MOD = 1.36
+URANIUM_ENRICH_MOD = 2.00
 
 PROJECTS = {
     "ironworks": IRONWORKS,
@@ -206,6 +274,18 @@ PROJECTS = {
     "propbureau": PROP_BUREAU,
     "cenciveng": CEN_CIV_ENG
 }
+
+###########
+# Seasons #
+###########
+
+SUMMER = 1
+FALL = 2
+WINTER = -1
+SPRING = -2
+
+SUMMER_MOD = 1.2
+WINTER_MOD = 0.8
 
 ################
 # War Policies #

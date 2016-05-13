@@ -3,14 +3,37 @@ import grequests
 
 from .data import *
 
+ALLIANCE_REPR = """{0.name} (#{0.id}) {{
+    Acronym: {0.acronym}
+    Color: {0.color}
+    Continent: {0.continent}
+    Founded: {0.founded}
+    Accepting Members: {0.accepting}
+
+    Forum URL: {0.forum}
+    IRC Channel: #{0.irc}
+    Flag URL: {0.flag}
+
+    Score: {0.score:,.2f}
+    GDP: ${0.gdp:,.2f}
+    Treasures: {0.treasures}
+
+    Soldiers: {0.soldiers:,}
+    Tanks: {0.tanks:,}
+    Aircraft: {0.aircraft:,}
+    Ships: {0.ships:,}
+    Missiles: {0.missiles:,}
+    Nuclear Weapons: {0.nukes:,}
+}}"""
+
 
 class Alliance:
 
     def __init__(
             self, game, id, name="", acronym="", color=BEIGE, accepting=True,
             flag="", founded=datetime.now(), forum="", irc="", treasures=0,
-            continent=NORTH_AMERICA, officer_ids=None, leader_ids=None,
-            heir_ids=None
+            continent=NORTH_AMERICA, revenue_tax=0, resource_tax=0,
+            officer_ids=None, leader_ids=None, heir_ids=None
     ):
 
         self.game = game
@@ -26,6 +49,8 @@ class Alliance:
         self.irc = irc
         self.treasures = treasures
         self.continent = continent
+        self.revenue_tax = revenue_tax
+        self.resource_tax = resource_tax
         self.officer_ids = officer_ids if officer_ids else []
         self.leader_ids = leader_ids if leader_ids else []
         self.heir_ids = heir_ids if heir_ids else []
@@ -121,10 +146,11 @@ class Alliance:
         self.name = d['name']
         self.acronym = d['acronym']
         self.color = COLORS[d['color']]
-        self.accepting = bool(int(d['accepting']))
+        self.accepting = bool(int(d['accepting members']))
         self.flag = d['flagurl']
         self.forum = d['forumurl']
         self.irc = d['irc']
+        self.treasures = d['treasures']
         self.leader_ids = [int(i) for i in d['leaderids']]
 
     def fetch(self):
@@ -137,5 +163,4 @@ class Alliance:
 
     def __repr__(self):
 
-        return "Alliance(" + \
-               ")"
+        return ALLIANCE_REPR.format(self)
